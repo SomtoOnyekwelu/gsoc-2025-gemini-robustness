@@ -8,7 +8,7 @@
 
 ## Overview
 
-This repository contains supporting materials and **proof-of-concept (PoC) code** for my Google Summer of Code 2025 application. The proposed project aims to rigorously evaluate the **multimodal robustness** of Google's Gemini models on the **VQA v2 benchmark**.
+This repository contains supporting materials and **proof-of-concept (PoC) code** for my Google Summer of Code 2025 application. The proposed project aims to rigorously evaluate the **multimodal and multilingual robustness** of Google's Gemini models on the **VQA v2 benchmark**.
 
 The core idea is to move beyond standard evaluations using pristine data by systematically injecting controlled noise into both **image** (e.g., blur, occlusion) and **text** (e.g., typos, semantic shifts) inputs. A key aspect of this evaluation is its **multilingual scope**, assessing performance not only on English but also on automatically translated **Hindi** (medium-resource, Devanagari script) and **Igbo** (low-resource, unique structure) to understand robustness across diverse linguistic contexts.
 
@@ -98,5 +98,5 @@ Thank you for reviewing my supporting materials. I am enthusiastic about the pot
 
 **References Mentioned in Proposal:**
 
-*   Goyal, Y., et al. (2017). Making the V in VQA Matter... *CVPR*. ([visualqa.org](https://visualqa.org/))
-*   Reuel, A., et al. (2024). BetterBench: Assessing AI Benchmarks... *arXiv:2402.08165*. ([arxiv.org/abs/2402.08165](https://arxiv.org/abs/2402.08165))
+*   Goyal, Y., Khot, T., Summers-Stay, D., Batra, D., & Parikh, D. (2017). Making the V in VQA Matter: Elevating the Role of Image Understanding in Visual Question Answering. Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR). https://arxiv.org/abs/1612.00837
+*   Reuel, A., Hardy, A., Smith, C., Lamparth, M., Hardy, M., & Kochenderfer, M. J. (2024). BetterBench: Assessing AI Benchmarks, Uncovering Issues, and Establishing Best Practices. https://arxiv.org/abs/2411.12990
