@@ -1,61 +1,61 @@
 # GSoC 2025 Proposal Support: Gemini Robustness Evaluation
 
-**Applicant:** Somtochukwu Onyekwelu
-**GSoC Organization:** Google (DeepMind)
+**Applicant:** Somto Onyekwelu ([https://github.com/SomtoOnyekwelu](https://github.com/SomtoOnyekwelu))
+**GSoC Organization:** Google DeepMind
 **Project Idea:** Evaluate Gemini on an Open-Source Benchmark
 
 ---
 
 ## Overview
 
-This repository contains supporting materials and proof-of-concept code for my Google Summer of Code 2025 application. The proposed project centers on a crucial aspect of real-world AI deployment: **robustness**. Specifically, it aims to rigorously evaluate the multimodal capabilities of Google's Gemini models when faced with **imperfect, noisy inputs in both image and text modalities**.
+This repository contains supporting materials and **proof-of-concept (PoC) code** for my Google Summer of Code 2025 application. The proposed project aims to rigorously evaluate the **multimodal robustness** of Google's Gemini models on the **VQA v2 benchmark**.
 
-Standard benchmarks often rely on high-quality data. This project moves beyond that limitation by systematically introducing controlled noise (e.g., blur, occlusion for images; typos, semantic shifts for text) to the VQA v2 benchmark dataset.
+The core idea is to move beyond standard evaluations using pristine data by systematically injecting controlled noise into both **image** (e.g., blur, occlusion) and **text** (e.g., typos, semantic shifts) inputs. A key aspect of this evaluation is its **multilingual scope**, assessing performance not only on English but also on automatically translated **Hindi** (medium-resource, Devanagari script) and **Igbo** (low-resource, unique structure) to understand robustness across diverse linguistic contexts.
 
-Crucially, this evaluation will extend **beyond typical English-centric analysis**. By assessing performance across **English** (high-resource), **Hindi** (medium-resource, different script), and **Igbo** (low-resource, different grammatical structure), the project will provide valuable insights into Gemini's **linguistic fairness and robustness** across diverse user populations. Understanding how noise impacts performance differently across these languages is vital for building truly globally applicable AI.
+The goal is to provide quantifiable benchmarks and comparative analysis of Gemini's performance under varying degrees of realistic input degradation, contributing valuable insights for model development, deployment, and fairness considerations.
 
-This repository currently serves to demonstrate initial technical feasibility, particularly for image noise injection, and my proactive engagement with the project's core requirements.
+This repository serves primarily to **demonstrate technical feasibility** and **proactive engagement** by providing initial implementations of the core noise generation mechanisms described in the full GSoC proposal.
 
-## Purpose of this Repository
+## Purpose of this Repository (Proposal Stage)
 
-The primary purpose of this repository **at the proposal stage** is to:
+1.  **Demonstrate Proactivity:** Show concrete steps already taken to implement core project components.
+2.  **Prove Technical Feasibility:** Offer working Python code for the planned image and text noise injection methods.
+3.  **Illustrate Methodology:** Provide tangible examples of the noise generation techniques using relevant libraries (OpenCV, NumPy, Python built-ins).
+4.  **Support Proposal Claims:** Serve as direct evidence supporting the technical plan outlined in the GSoC proposal document.
 
-1.  **Demonstrate Proactivity:** Show active development on core components outlined in my proposal.
-2.  **Prove Technical Feasibility:** Provide working proof-of-concept code for key technical challenges (initially focusing on image noise injection).
-3.  **Illustrate Planned Methodology:** Give a tangible example of the noise generation approach that will be extended to text and applied systematically.
-4.  **Support Proposal Claims:** Offer concrete evidence of my understanding of the required tools (Python, OpenCV, NumPy) and the project's technical direction.
+*(This repository will host the full project codebase if the proposal is accepted for GSoC 2025.)*
 
-This repository will host the full project codebase if the proposal is accepted.
+## Current Functionality: Proof-of-Concept (Noise Injection)
 
-## Current Functionality: Proof-of-Concept (Image Noise Injection)
+The repository currently includes functional PoC implementations for the core noise mechanisms:
 
-The repository currently includes:
+*   **`src/ImageNoiseFunctions.py`**: ([View Code](https://github.com/SomtoOnyekwelu/gsoc-2025-gemini-robustness/blob/main/src/ImageNoiseFunctions.py))
+    *   Implements `apply_gaussian_blur` using OpenCV, controlled by sigma values corresponding to Low/Medium/High conceptual impact levels.
+    *   Implements `apply_occlusion` using OpenCV, applying random rectangular patches (mean color filled) scaled for Low/Medium/High impact.
+    *   Includes runnable example (`if __name__ == "__main__":`) demonstrating visual effects.
+*   **`src/CharacterNoiseFunctions.py`**: ([View Code](https://github.com/SomtoOnyekwelu/gsoc-2025-gemini-robustness/blob/main/src/CharacterNoiseFunctions.py))
+    *   Implements `add_char_noise` supporting Substitute, Delete, Insert, and Swap operations based on a target percentage (Low-5%, Med-15%, High-25%) of original characters modified.
+    *   Uses a robust "build new list" approach for applying noise based on originally selected indices.
+    *   Includes basic support for English, Hindi, and Igbo using simplified alphabets (**Note: Limitations explicitly documented in code comments**).
+    *   Includes runnable example (`if __name__ == "__main__":`) demonstrating noise application on sample text for each language (using `random.seed(42)` for reproducible output).
+*   **`requirements.txt`**: Lists necessary dependencies (OpenCV, NumPy).
+*   **`.gitignore`**: Standard Python exclusions.
 
-*   **`.gitignore`**: Standard Python environment exclusions.
-*   **`requirements.txt`**: Initial project dependencies (OpenCV, NumPy).
-*   **`src/ImageNoiseFunctions.py`**: A Python script demonstrating the implementation of the two core **image noise** types proposed:
-    *   **Gaussian Blur:** Simulates out-of-focus or low-detail images ("low", "medium", "high" levels map to sigma values).
-    *   **Occlusion:** Simulates partially hidden objects ("low", "medium", "high" levels map to % area occluded with mean image color).
-    *   The script includes helper functions, type hinting, error handling, and a runnable example to visualize the noise effects clearly.
+This PoC code validates the proposed approach for programmatically generating controlled noise for both modalities.
 
-This initial code **validates the approach** for generating controlled image degradation programmatically. The **next step** in the full project involves implementing analogous functions for **text noise**.
+## Planned Methodology Summary (GSoC Project)
 
-## Planned Methodology (GSoC Project Summary)
+1.  **Benchmark & Languages:** VQA v2 dataset; evaluate on English, automatically translated Hindi & Igbo.
+2.  **Noise:** Apply Image (Blur, Occlusion) and Text (CharNoise, BackTranslation) noise at Low(5%)/Medium(15%)/High(25%) intensity levels.
+3.  **Model:** Evaluate Google Gemini (e.g., Pro Vision) via API.
+4.  **Metric:** Analyze VQA Accuracy degradation (Absolute/Relative Drop vs. Baselines).
+5.  **Goal:** Quantify and compare multimodal/multilingual robustness.
 
-The full GSoC project methodology includes:
+*(Please refer to the full GSoC proposal document for detailed methodology, timeline, and objectives.)*
 
-1.  **Benchmark & Dataset:** VQA v2 dataset, providing image-question-answer triplets.
-2.  **Multilingual Scope:** Evaluate on original English data and automatically translated versions for **Hindi** and **Igbo** to assess performance across varying linguistic resource levels and structures.
-3.  **Multimodal Noise Injection:** Apply controlled noise systematically:
-    *   **Image Noise:** Gaussian Blur, Occlusion (levels: Low, Medium, High) - PoC implemented.
-    *   **Text Noise:** Character-Level Noise (typos), Back-Translation (semantic shifts via MT) (levels: Low, Medium, High) - To be implemented.
-4.  **Model Integration:** Utilize Google's Gemini models via available APIs for inference on the noisy image-text pairs.
-5.  **Evaluation Metric:** Quantify robustness using standard **VQA Accuracy**. The primary outcome will be the **performance drop** compared to clean baselines for each language/noise condition.
-6.  **Analysis & Insights:** Analyze how different noise types/levels impact accuracy across the three languages, identifying specific model sensitivities and potential disparities.
+## Setup and Usage (Current Proof-of-Concept Demos)
 
-## Setup and Usage (Current Proof-of-Concept)
-
-To run the current image noise demonstration:
+To run the demonstration scripts:
 
 1.  **Clone the repository:**
     ```bash
@@ -71,23 +71,32 @@ To run the current image noise demonstration:
     ```bash
     pip install -r requirements.txt
     ```
-4.  **Run the example script:**
-    ```bash
-    python src/ImageNoiseFunctions.py
-    ```
-    *   Displays examples of the implemented image noise effects using OpenCV's `imshow` (if GUI is available/enabled).
+4.  **Run the desired demo script:**
+    *   For Image Noise:
+        ```bash
+        python src/ImageNoiseFunctions.py
+        ```
+        *(This will typically display noisy images using OpenCV if a GUI is available)*
+    *   For Character Noise:
+        ```bash
+        python src/CharacterNoiseFunctions.py
+        ```
+        *(This will print original and noisy sample text for English, Hindi, and Igbo to the console)*
 
-## Future Work (If Proposal Accepted)
+## Future Work (If Proposal Accepted for GSoC 2025)
 
-Following acceptance into GSoC 2025, the project milestones include:
-
-*   Implementing text noise functions (Character Noise, Back-Translation).
-*   Securing API access and integrating Gemini inference.
-*   Setting up the VQA dataset processing pipeline (including handling translations).
-*   Executing systematic evaluation experiments across all defined conditions.
-*   Conducting thorough result analysis and documenting insights.
-*   Preparing a final report and potentially contributing reusable code modules.
+*   Finalize noise function implementations based on mentor feedback.
+*   Implement the Back-Translation text noise mechanism.
+*   Develop the full pipeline for VQA data handling, translation, Gemini API interaction, and result aggregation.
+*   Execute systematic evaluation experiments.
+*   Conduct thorough analysis and generate visualizations.
+*   Produce the final report and codebase deliverables as outlined in the proposal.
 
 ---
 
-Thank you for considering my application. I am highly motivated to tackle this challenging evaluation of Gemini's multimodal and multilingual robustness under the mentorship available at Google DeepMind.
+Thank you for reviewing my supporting materials. I am enthusiastic about the potential of this project to contribute valuable insights into AI robustness and look forward to the possibility of developing it further during Google Summer of Code at DeepMind.
+
+**References Mentioned in Proposal:**
+
+*   Goyal, Y., et al. (2017). Making the V in VQA Matter... *CVPR*. ([visualqa.org](https://visualqa.org/))
+*   Reuel, A., et al. (2024). BetterBench: Assessing AI Benchmarks... *arXiv:2402.08165*. ([arxiv.org/abs/2402.08165](https://arxiv.org/abs/2402.08165))
